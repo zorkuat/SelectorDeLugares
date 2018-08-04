@@ -7,15 +7,44 @@
 //
 
 import UIKit
+import MapKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
     var window: UIWindow?
-
-
+    
+    // location manager
+    lazy var locationManager: CLLocationManager = {
+        let m = CLLocationManager()
+        m.delegate = self
+        m.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        m.allowsBackgroundLocationUpdates = true
+        return m
+    }()
+    
+    //// !!! CAJA DE DATOS PARA PRUEBAS
+    var whitebox :  Whitebox = Whitebox()
+    var listaAnotaciones : AnnotationsList = AnnotationsList()
+    
+    let gestorBBDD = GestorBBDD()
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
+        
+        /// CREACIÓN, SI NO EXISTE, DE LA BASE DE DATOS Y SUS TABLAS
+        /// SIGLETON PARA LA BASE DE DATOS.
+        gestorBBDD.setup_BBDD()
+        
+        
+        /// DESCOMENTAR PARA RELLENAR LA TABLA DE ANOTACIONES CON DATOS DE PRUEBA
+        //_ = gestorBBDD.init_mock(whitebox: whitebox)
+        gestorBBDD.cargar_anotaciones(lista: listaAnotaciones)
+    
+        
         return true
     }
 
@@ -41,6 +70,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        //print("locations = \(locValue.latitude) \(locValue.longitude)")
+        return
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus){
+        if case CLAuthorizationStatus.authorizedAlways = status{
+            manager.startUpdatingLocation()
+        }
+    }
+    
 }
 
