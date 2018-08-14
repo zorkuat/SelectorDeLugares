@@ -11,8 +11,8 @@ import MapKit
 
 extension CLLocationCoordinate2D{
     
-    /// !!! ESTO SE ME ESTÁ DESCONTROLANDO
+    /// Crear una anotación como función extendida de una coordenada
     func annotation(withTitile title:String?, subTitle: String?) -> Annotation{
-        return Annotation(coordinate: self, title: title, subtitle: subTitle/*, id: 0*/)
+        return Annotation(coordinate: self, title: title, subtitle: subTitle)
     }
 }

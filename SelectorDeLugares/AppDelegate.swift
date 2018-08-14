@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         
         /// DESCOMENTAR PARA RELLENAR LA TABLA DE ANOTACIONES CON DATOS DE PRUEBA
-        //_ = gestorBBDD.init_mock(whitebox: whitebox)
+        // _ = gestorBBDD.init_mock(whitebox: whitebox)
         gestorBBDD.cargar_anotaciones(lista: listaAnotaciones)
     
         

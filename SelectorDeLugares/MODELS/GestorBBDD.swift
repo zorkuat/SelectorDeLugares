@@ -93,6 +93,11 @@ class GestorBBDD {
         return 0
     }
     
+    // Usamos tablas rowid. Modifican el identificador para que la id sea exactamente la posición
+    // que ocupa en la tabla. Aunque para tablas de millones de datos sea muy costoso, para esta
+    // tabla es útil (porque siempre se qué anotación estoy utilizando)
+    // Si supiese usar los índices de la base de datos sería, en realidad, mucho más eficiente.
+    // Tampoco es que la eficiencia en esta operación sea crítica.
     func borrar_rowid (id: Int, cuantos: Int) -> Int
     {
         
@@ -143,6 +148,8 @@ class GestorBBDD {
             }
     }
     
+    // Función de carga de los datos de caja blanca en la base de datos.
+    // ATENCIÓN: La base de datos debería estar vacía para llamar a esta función.
     func init_mock(whitebox: Whitebox) -> Int
     {
         var result = 0
@@ -157,6 +164,12 @@ class GestorBBDD {
         return result
     }
     
+    // Función que carga las anotaciones en una estructura interna.
+    // Si hubiese millones de anotaciones sería un problema. Pero no las habrá.
+    // Por otro lado, cuando se trabaje con anotaciones públicas la gestión de las mismas
+    // será progresiva a nivel de mapa.
+    // Es decir, que no cargará todas las que haya en el mapa visible, sino sólo las que
+    // esté garantizada su visibilidad o, marcadores de grupo.
     func cargar_anotaciones(lista :  AnnotationsList)
     {
         do {
